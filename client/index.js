@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CharacterSelect from './components/character-chooser';
+import Adventure from './components/adventure';
 
 const socket = io.connect(getSocketUrl());
 const emit = socket.emit.bind(socket);
@@ -20,8 +21,11 @@ socket.on('message', data => {
     break;
 
   case 'ADVENTURE_STATE':
-    ReactDOM.render(<div>ADVENTURE STATE!</div>,
-      mountNode);
+    ReactDOM.render(<Adventure
+      uid={'/#' + socket.id}
+      character={data.characters.find(chr => chr.selectedBy === '/#' + socket.id)}
+      onActionSelect={id => createActionSubmit(emit, id)}
+      />, mountNode);
     break;
 
   }
@@ -46,6 +50,13 @@ function createCharacterSelect(emit, id) {
 function createCharacterNegate(emit, id) {
   emit('message', {
     type: 'CHARACTER_NEGATE',
+    id,
+  });
+}
+
+function createActionSubmit(emit, id) {
+  emit('message', {
+    type: 'SUBMIT_ACTION',
     id,
   });
 }
