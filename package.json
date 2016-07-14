@@ -27,7 +27,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "DEBUG=rockin:* node server/server.js"
+    "server": "DEBUG=rockin:* node server/server.js",
     "build": "rollup -c",
     "watch": "rollup -c -w"
   },
