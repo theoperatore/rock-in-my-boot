@@ -13,13 +13,17 @@ const initializeGame = require('../lib/game');
 
 const app = express();
 const io = IO(config.WSS_PORT);
-const rockin = initializeGame(io);
+const createMessageHandler = initializeGame(action => io.emit('message', action));
 
 io.on('connection', socket => {
+  let handler = createMessageHandler(socket.id);
   let count = Object.keys(io.sockets.sockets).length;
   wssLog('client connected [ %s ] ( %s )', socket.id, count);
 
-  rockin.syncClient(socket);
+  // figure out better way to do this?
+  handler({ type: 'CURRENT_STATE' });
+
+  socket.on('message', handler);
 });
 
 app.use('*', (req, res, next) => {
