@@ -1,20 +1,51 @@
 import io from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-console.log('le go');
+import CharacterSelect from './components/character-chooser';
 
 const socket = io.connect(getSocketUrl());
+const emit = socket.emit.bind(socket);
+const mountNode = document.body.querySelector('#root');
 
-socket.on('message', data => console.log('data', data));
+socket.on('message', data => {
+  switch (data.type) {
+
+  case 'CHARACTER_SELECT_STATE':
+    ReactDOM.render(<CharacterSelect
+      uid={'/#' + socket.id}
+      characters={data.characters}
+      onCharacterSelect={id => createCharacterSelect(emit, id)}
+      onCharacterNegate={id => createCharacterNegate(emit, id)}
+      />, mountNode);
+    break;
+
+  case 'ADVENTURE_STATE':
+    ReactDOM.render(<div>ADVENTURE STATE!</div>,
+      mountNode);
+    break;
+
+  }
+});
+
 socket.on('connect', data => console.log('connect', data));
 socket.on('connect_error', err => console.error(err));
 socket.on('connect_timeout', err => console.error(err));
 
-
-ReactDOM.render(<p>hello</p>, document.body.querySelector('#root'));
-
 function getSocketUrl() {
   let [ protocol, url ] = document.location.origin.split(':');
   return `${protocol}:${url}:${process.env.WSS_PORT}`;
+}
+
+function createCharacterSelect(emit, id) {
+  emit('message', {
+    type: 'CHARACTER_CHOSEN',
+    id,
+  });
+}
+
+function createCharacterNegate(emit, id) {
+  emit('message', {
+    type: 'CHARACTER_NEGATE',
+    id,
+  });
 }
