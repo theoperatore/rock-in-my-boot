@@ -24,4 +24,9 @@ app.use(express.static(`${__dirname}/public`));
 
 let server = app.listen(config.HTTP_PORT, () => {
   httpLog(`http server up on port ${config.HTTP_PORT}`);
-})
+});
+
+exports.kill = function kill() {
+  io.close();
+  server.close();
+}
