@@ -12,6 +12,7 @@ export default class CharacterChooser extends React.Component {
     } = this.props;
     return (
       <div>
+        <h1>Choose Your Character</h1>
         {
           characters.map(c => (
             <div>
