@@ -34,7 +34,7 @@ export default {
     //globals(),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.WSS_PORT': JSON.stringify(process.env.WSS_PORT || 9966),
+      'process.env.WSS_PORT': JSON.stringify(process.env.WSS_PORT || 9967),
     }),
     //browserifyPlugin(localenvify()),
 	  nodeResolve({
