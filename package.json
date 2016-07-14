@@ -1,0 +1,24 @@
+{
+  "name": "rock-in-my-boot",
+  "version": "0.1.0",
+  "description": "grab your people and play an adventuring party game",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.4.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theoperatore/rock-in-my-boot.git"
+  },
+  "author": "Alex Petersen <theoperatore@gmail.com> (http://anpetersen.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theoperatore/rock-in-my-boot/issues"
+  },
+  "homepage": "https://github.com/theoperatore/rock-in-my-boot#readme"
+}
