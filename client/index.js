@@ -40,8 +40,7 @@ socket.on('connect_timeout', err => console.error(err));
 function handleConnect() {
   console.log('connect');
   let uid = sessionStorage.getItem('__rock_in_my_boot_id__');
-  emit('message', {
-    type: 'INITIALIZE',
+  emit('initialize', {
     uid,
   });
 }

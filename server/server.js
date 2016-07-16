@@ -16,13 +16,22 @@ const io = IO(config.WSS_PORT);
 // create one per websocket room?
 const roomSocketHandler = initializeGame(action => io.emit('message', action));
 
+function handleClientInitialize(action) {
+  let uid = action.uid;
+  if (!uid) {
+    uid = Math.random().toString(36);
+  }
+
+  this.emit('initialize', { uid });
+}
+
 io.on('connection', socket => {
   let count = Object.keys(io.sockets.sockets).length;
   wssLog('client connected [ %s ] ( %s )', socket.id, count);
 
   // figure out better way to do this?
   // roomSocketHandler.call(socket, ({ type: 'CURRENT_STATE' }));
-
+  socket.on('initialize', handleClientInitialize);
   socket.on('message', roomSocketHandler);
   socket.on('disconnect', () => {
     let count = Object.keys(io.sockets.sockets).length;
