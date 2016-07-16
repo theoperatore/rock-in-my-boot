@@ -12,17 +12,22 @@ const httpLog = debug('rockin:http');
 
 const app = express();
 const io = IO(config.WSS_PORT);
-const createMessageHandler = initializeGame(action => io.emit('message', action));
+
+// create one per websocket room?
+const roomSocketHandler = initializeGame(action => io.emit('message', action));
 
 io.on('connection', socket => {
-  let handler = createMessageHandler(socket.id);
   let count = Object.keys(io.sockets.sockets).length;
   wssLog('client connected [ %s ] ( %s )', socket.id, count);
 
   // figure out better way to do this?
-  handler({ type: 'CURRENT_STATE' });
+  roomSocketHandler.call(socket, ({ type: 'CURRENT_STATE' }));
 
-  socket.on('message', handler);
+  socket.on('message', roomSocketHandler);
+  socket.on('disconnect', () => {
+    let count = Object.keys(io.sockets.sockets).length;
+    wssLog('client disconnect [ %s ] ( %s )', socket.id, count);
+  });
 });
 
 app.use('*', (req, res, next) => {
@@ -36,7 +41,7 @@ let server = app.listen(config.HTTP_PORT, () => {
   httpLog(`http server up on port ${config.HTTP_PORT}`);
 });
 
-exports.kill = function kill() {
+export default function kill() {
   io.close();
   server.close();
 }
