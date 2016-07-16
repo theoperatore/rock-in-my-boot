@@ -1,15 +1,14 @@
 'use strict';
 
-const express = require('express');
-const IO = require('socket.io');
-const debug = require('debug');
+import express from 'express';
+import IO from 'socket.io';
+import debug from 'debug';
+
+import config from '../config';
+import initializeGame from '../lib/game';
 
 const wssLog = debug('rockin:wss');
 const httpLog = debug('rockin:http');
-const config = require('../config');
-
-// prolly needs a rename?
-const initializeGame = require('../lib/game');
 
 const app = express();
 const io = IO(config.WSS_PORT);
