@@ -21,7 +21,7 @@ io.on('connection', socket => {
   wssLog('client connected [ %s ] ( %s )', socket.id, count);
 
   // figure out better way to do this?
-  roomSocketHandler.call(socket, ({ type: 'CURRENT_STATE' }));
+  // roomSocketHandler.call(socket, ({ type: 'CURRENT_STATE' }));
 
   socket.on('message', roomSocketHandler);
   socket.on('disconnect', () => {
