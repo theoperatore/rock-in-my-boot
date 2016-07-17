@@ -22,17 +22,27 @@ function handleClientInitialize(action) {
     uid = Math.random().toString(36);
   }
 
-  this.emit('initialize', { uid });
+  return uid;
 }
 
 io.on('connection', socket => {
   let count = Object.keys(io.sockets.sockets).length;
   wssLog('client connected [ %s ] ( %s )', socket.id, count);
 
-  // figure out better way to do this?
-  // roomSocketHandler.call(socket, ({ type: 'CURRENT_STATE' }));
-  socket.on('initialize', handleClientInitialize);
-  socket.on('message', roomSocketHandler);
+  socket.on('message', action => {
+    if (action.type === 'USER_LOGIN') {
+      let uid = handleClientInitialize(action);
+
+      socket.emit('message', {
+        type: 'USER_LOGIN_SUCCESS',
+        uid
+      });
+      return;
+    }
+
+    roomSocketHandler(action);
+  });
+
   socket.on('disconnect', () => {
     let count = Object.keys(io.sockets.sockets).length;
     wssLog('client disconnect [ %s ] ( %s )', socket.id, count);

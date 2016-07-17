@@ -10,45 +10,47 @@ const mountNode = document.body.querySelector('#root');
 
 socket.on('message', data => {
   let uid = sessionStorage.getItem('__rock_in_my_boot_id__');
+
   switch (data.type) {
-
-  case 'CHARACTER_SELECT_STATE':
-    ReactDOM.render(<CharacterSelect
-      uid={uid}
-      characters={data.characters}
-      onCharacterSelect={id => createCharacterSelect(emit, id)}
-      onCharacterNegate={id => createCharacterNegate(emit, id)}
-      />, mountNode);
+  case 'USER_LOGIN_SUCCESS':
+    sessionStorage.setItem('__rock_in_my_boot_id__', data.uid);
+    getCurrentState();
     break;
+  case 'CURRENT_STATE':
+    switch (data.mode) {
+    case 'CHARACTER_SELECT_STATE':
+      ReactDOM.render(<CharacterSelect
+        uid={uid}
+        characters={data.characters}
+        onCharacterSelect={id => createCharacterSelect(emit, id)}
+        onCharacterNegate={id => createCharacterNegate(emit, id)}
+        />, mountNode);
+      break;
 
-  case 'ADVENTURE_STATE':
-    ReactDOM.render(<Adventure
-      uid={uid}
-      character={data.characters.find(chr => chr.selectedBy === uid)}
-      onActionSelect={id => createActionSubmit(emit, id)}
-      />, mountNode);
+    case 'ADVENTURE_STATE':
+      ReactDOM.render(<Adventure
+        uid={uid}
+        character={data.characters.find(chr => chr.selectedBy === uid)}
+        onActionSelect={id => createActionSubmit(emit, id)}
+        />, mountNode);
+      break;
+
+    }
     break;
-
   }
 });
 
 socket.on('connect', handleConnect);
-socket.on('initialize', handleInitialize);
 socket.on('connect_error', err => console.error(err));
 socket.on('connect_timeout', err => console.error(err));
 
 function handleConnect() {
   console.log('connect');
   let uid = sessionStorage.getItem('__rock_in_my_boot_id__');
-  emit('initialize', {
+  emit('message', {
+    type: 'USER_LOGIN',
     uid,
   });
-}
-
-function handleInitialize(data) {
-  console.log('initialized with uid', data);
-  sessionStorage.setItem('__rock_in_my_boot_id__', data.uid);
-  getCurrentState();
 }
 
 function getSocketUrl() {
