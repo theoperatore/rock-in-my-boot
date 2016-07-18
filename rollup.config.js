@@ -10,15 +10,19 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 let pkg = require('./package.json');
 let external = Object.keys(pkg.dependencies);
 
+const babelConfig = babelrc();
+// rollup uses "exclude" but babelrc uses "ignore", ugh.
+babelConfig.exclude = babelConfig.ignore;
+
 export default {
   entry: 'client/index.js',
   plugins: [
-    //babel(babelrc()),
-    babel({
-      babelrc: false,
-      exclude: 'node_modules/**',
-      presets: [ 'es2015-rollup', 'react' ]
-    }),
+    babel(babelConfig),
+    //babel({
+    //  //babelrc: false,
+    //  exclude: 'node_modules/**',
+    //  //presets: [ 'es2015-rollup', 'react' ]
+    //}),
     //jsx({ factory: 'React.createElement' }),
     commonjs({
       //include: 'node_modules/**',
