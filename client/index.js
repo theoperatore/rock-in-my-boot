@@ -18,7 +18,7 @@ socket.on('message', data => {
     break;
   case 'CURRENT_STATE':
     switch (data.mode) {
-    case 'CHARACTER_SELECT_STATE':
+    case 'CHARACTER_SELECT_MODE':
       ReactDOM.render(<CharacterSelect
         uid={uid}
         characters={data.characters}
@@ -27,7 +27,7 @@ socket.on('message', data => {
         />, mountNode);
       break;
 
-    case 'ADVENTURE_STATE':
+    case 'ENTER_ROOM_MODE':
       ReactDOM.render(<Adventure
         uid={uid}
         character={data.characters.find(chr => chr.selectedBy === uid)}

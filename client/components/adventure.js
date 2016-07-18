@@ -19,7 +19,7 @@ export default class Adventure extends React.Component {
         <h1>ADVENTURE!</h1>
 
         {
-          character && character.actions.map(action => (
+          character.actions && character.actions.map(action => (
             <div>
               <button
                 onClick={e => onActionSelect(action.id)}
