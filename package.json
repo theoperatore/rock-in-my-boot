@@ -29,7 +29,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "DEBUG=rockin:* nodemon server/server.js --watch server --watch lib --exec babel-node --presets es2015 --plugins syntax-object-rest-spread,transform-object-rest-spread",
+    "server": "DEBUG=rockin:* nodemon server/server.js --watch server --watch lib --exec babel-node",
     "build": "rollup -c",
     "watch": "rollup -c -w"
   },
