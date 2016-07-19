@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CharacterSelect from './components/character-chooser';
-import Adventure from './components/adventure';
+import RoomPrompt from './components/room-prompt';
 
 const socket = io.connect(getSocketUrl());
 const emit = socket.emit.bind(socket);
@@ -27,13 +27,18 @@ socket.on('message', data => {
         />, mountNode);
       break;
 
-    case 'ENTER_ROOM_MODE':
-      ReactDOM.render(<Adventure
+    case 'ENTER_ROOM_MODE': {
+      const chr = data.characters.find(chr => chr.selectedBy === uid);
+      ReactDOM.render(<RoomPrompt
         uid={uid}
         character={data.characters.find(chr => chr.selectedBy === uid)}
+        name={data.currentRoom.name}
+        desc={data.currentRoom.desc}
+        classActions={data.currentRoom.classActions[chr.id]}
         onActionSelect={id => createActionSubmit(emit, id)}
         />, mountNode);
       break;
+    }
 
     }
     break;

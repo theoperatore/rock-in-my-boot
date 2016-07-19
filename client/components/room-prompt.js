@@ -6,7 +6,10 @@ export default class Adventure extends React.Component {
   render () {
     const {
       uid,
+      name,
+      desc,
       character,
+      classActions,
       onActionSelect,
     } = this.props;
 
@@ -16,10 +19,11 @@ export default class Adventure extends React.Component {
 
     return (
       <div>
-        <h1>ADVENTURE!</h1>
+        <h1>{name}</h1>
+        <p>{desc}</p>
 
         {
-          character.actions && character.actions.map(action => (
+          classActions.map(action => (
             <div>
               <button
                 onClick={e => onActionSelect(action.id)}
