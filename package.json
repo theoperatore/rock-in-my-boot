@@ -17,6 +17,7 @@
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0",
     "rollup": "^0.32.2",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^3.1.0",
