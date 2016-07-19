@@ -40,6 +40,11 @@ socket.on('message', data => {
       break;
     }
 
+    case 'MOVING_TO_NEXT_ROOM_MODE': {
+      ReactDOM.render(<h1>WALKING to the next room...</h1>, mountNode);
+      break;
+    }
+
     case 'END_GAME_MODE': {
       ReactDOM.render(<h1>THE GAME IS OVER</h1>, mountNode);
       break;
