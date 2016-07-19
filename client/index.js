@@ -32,9 +32,9 @@ socket.on('message', data => {
       ReactDOM.render(<RoomPrompt
         uid={uid}
         character={data.characters.find(chr => chr.selectedBy === uid)}
-        name={data.currentRoom.name}
-        desc={data.currentRoom.desc}
-        classActions={data.currentRoom.classActions[chr.id]}
+        name={data.room.name}
+        desc={data.room.desc}
+        classActions={data.room.classActions[chr.id]}
         onActionSelect={id => createActionSubmit(emit, id)}
         />, mountNode);
       break;
